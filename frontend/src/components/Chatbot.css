@@ -1,0 +1,71 @@
+.chatbot-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    width: 30vw; /* Adjust width as needed */
+    height: 80vh; /* Adjust height as needed */
+    margin: auto;
+    position: relative;
+  }
+  
+  .messages-container {
+    padding: 2em;
+    height: 90%; /* Adjust based on your design */
+    overflow-y: auto; /* Enables scrolling */
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+  }
+  
+  .message.user {
+    align-self: flex-end;
+    background-color: rgb(5, 163, 5); /* User message color */
+    margin-left: 10em;
+  }
+  
+  .message.assistant {
+    align-self: flex-start;
+    background-color: rgb(95, 118, 126); /* GenAI agent message color */
+  }
+  
+  .message-input {
+    padding: 10px;
+    border: none;
+    border-top: 1px solid #ccc;
+    width: calc(100% - 100px); /* Adjust based on send button width */
+  }
+  
+  .send-button {
+
+    padding: 10px 20px;
+    background-color: rgb(5, 163, 5); /* Send button color */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .clear-button {
+    position:absolute;
+    top: 50vh;
+    left: 10vw;
+    padding: 10px 20px;
+    background-color: red; /* Clear button color */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width:17vw;
+  }
+
+  .chatbot-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
