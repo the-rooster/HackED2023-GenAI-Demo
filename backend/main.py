@@ -13,7 +13,14 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 CLIENT = OpenAI()
 SYSTEM_PROMPT = """
-You are an AI assistant that helps people with their homework. The following is a conversation with a student.
+You are an AI assistant that answers peoples questions!
+"""
+
+FILE_UPLOAD_PROMPT = """
+Here is a txt file named {filename} that you should reference for the remainder of the conversation.
+```
+{file}
+```
 """
 
 app = Flask(__name__)
@@ -50,8 +57,12 @@ def session():
     
     data = request.get_json()
 
-    # get the session id from the request
-    session_id = data['session_id']
+    if 'session_id' not in data or 'message' not in data:
+        session_id = str(uuid.uuid4())
+        conversations[session_id] = [{"role": "system", "content": SYSTEM_PROMPT}]
+    else:
+        # get the session id from the request
+        session_id = data['session_id']
 
     if session_id not in conversations:
         session_id = str(uuid.uuid4())
@@ -59,6 +70,38 @@ def session():
 
     # return the session id
     return jsonify({"session_id": session_id}), 200
+
+@app.route('/upload', methods=['POST'])
+def upload():
+
+    if 'file' not in request.files:
+        return {}, 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return {}, 400
+    
+    # get the session id from the request
+    session_id = request.json['session_id']
+
+    if not session_id in conversations:
+        return {}, 400
+    
+    # ensure filename ends with .txt
+    if not file.filename.endswith('.txt'):
+        return {}, 400
+    
+    # read the file
+    text = file.read().decode('utf-8')
+
+    # add the file to the conversation
+    conversations[session_id].append({"role": "user", "content": FILE_UPLOAD_PROMPT.format(filename=file.filename, file=text)})
+
+    # return the response
+    return {}, 200
+    
+
 
 @app.route('/chat', methods=['POST'])
 def chat():

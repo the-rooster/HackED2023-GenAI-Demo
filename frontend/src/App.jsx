@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <h1>Homework Bot</h1>
+      <h1>HackED Bot</h1>
       <Chatbot />
     </>
   )
