@@ -90,7 +90,7 @@ def upload():
         return {}, 400
     
     # ensure filename ends with .txt
-    if not file.filename.endswith('.txt') or file.filename.endswith('.docx'):
+    if not (file.filename.endswith('.txt') or file.filename.endswith('.docx')):
         return {}, 400
 
     # if the file is a docx, convert it to a txt file
