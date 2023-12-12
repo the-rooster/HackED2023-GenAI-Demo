@@ -95,10 +95,10 @@ def upload():
 
     # if the file is a docx, convert it to a txt file
     if file.filename.endswith('.docx'):
-        file = convert_docx_to_txt(file)
-    
-    # read the file
-    text = file.read().decode('utf-8')
+        text = convert_docx_to_txt(file)
+    else:
+        # read the file
+        text = file.read().decode('utf-8')
 
     # add the file to the conversation
     conversations[session_id][0]["content"] += FILE_UPLOAD_PROMPT.format(filename=file.filename, file=text)
