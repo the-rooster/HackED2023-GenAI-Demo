@@ -6,8 +6,9 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 
 import uuid
-
 import os
+
+from .utils import convert_docx_to_txt
 
 openai.api_key = os.environ.get("OPENAI_API_KEY") 
 
@@ -89,8 +90,12 @@ def upload():
         return {}, 400
     
     # ensure filename ends with .txt
-    if not file.filename.endswith('.txt'):
+    if not file.filename.endswith('.txt') or file.filename.endswith('.docx'):
         return {}, 400
+
+    # if the file is a docx, convert it to a txt file
+    if file.filename.endswith('.docx'):
+        file = convert_docx_to_txt(file)
     
     # read the file
     text = file.read().decode('utf-8')
