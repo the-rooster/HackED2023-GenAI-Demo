@@ -57,7 +57,7 @@ def session():
     
     data = request.get_json()
 
-    if 'session_id' not in data or 'message' not in data:
+    if 'session_id' not in data:
         session_id = str(uuid.uuid4())
         conversations[session_id] = [{"role": "system", "content": SYSTEM_PROMPT}]
     else:
@@ -83,7 +83,7 @@ def upload():
         return {}, 400
     
     # get the session id from the request
-    session_id = request.json['session_id']
+    session_id = request.form['session_id']
 
     if not session_id in conversations:
         return {}, 400
@@ -96,7 +96,7 @@ def upload():
     text = file.read().decode('utf-8')
 
     # add the file to the conversation
-    conversations[session_id].append({"role": "user", "content": FILE_UPLOAD_PROMPT.format(filename=file.filename, file=text)})
+    conversations[session_id][0]["content"] += FILE_UPLOAD_PROMPT.format(filename=file.filename, file=text)
 
     # return the response
     return {}, 200

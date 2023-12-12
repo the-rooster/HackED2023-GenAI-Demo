@@ -4,8 +4,10 @@ import loadingGif from '../assets/loading.gif';
 import './Chatbot.css'; // Assume we have a CSS file to style our components
 
 const Chatbot = () => {
-    const [messages, setMessages] = useState([]);
-    const [inputText, setInputText] = useState('');
+    const [messages, setMessages] = useState([]); // This is the array of messages that will be displayed in the chatbot
+    const [inputText, setInputText] = useState(''); // This is the text that the user would type in the input box
+    const [selectedFile, setSelectedFile] = useState(null); // This is the file that the user would upload
+
     const [sessionId, setSessionId] = useState(''); // This is the session ID that you would get from the GenAI API
 
 
@@ -14,6 +16,26 @@ const Chatbot = () => {
         getSessionId();
     }, []);
 
+
+    async function uploadFile() {
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('session_id', sessionId);
+
+            let req = await fetch("http://localhost:8080/upload", {
+                method: "POST",
+                body: formData,
+            });
+            let res = await req.json();
+
+            if (req.status !== 200) {
+                console.log('Error uploading file');
+                return;
+            }
+            
+        }
+    }
 
     async function getSessionId() {
         const storedSessionId = localStorage.getItem('sessionId');
@@ -38,7 +60,9 @@ const Chatbot = () => {
             return;
         }
 
+        console.log(res.session_id, storedSessionId)
         if (res.session_id == storedSessionId) {
+            console.log('Session ID is valid');
             // get the chat history
             let req = await fetch("http://localhost:8080/get-messages", {
                 method: "POST",
@@ -144,6 +168,10 @@ const Chatbot = () => {
                 </div>
             </div>
             <button onClick={clearMessages} className="clear-button">Clear</button>
+            <div className="upload-container">
+                <input type="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
+                <button onClick={uploadFile} className="upload-button">Upload</button>
+            </div>
         </>
 
     );
