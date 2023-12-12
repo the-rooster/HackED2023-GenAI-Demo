@@ -8,7 +8,7 @@ from flask_cors import CORS
 import uuid
 import os
 
-from .utils import convert_docx_to_txt
+from utils import convert_docx_to_txt
 
 openai.api_key = os.environ.get("OPENAI_API_KEY") 
 
