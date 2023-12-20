@@ -3,7 +3,7 @@
     flex-direction: column;
     border: 1px solid #ccc;
     width: 30vw; /* Adjust width as needed */
-    height: 80vh; /* Adjust height as needed */
+    height: 70vh; /* Adjust height as needed */
     margin: auto;
     position: relative;
   }
