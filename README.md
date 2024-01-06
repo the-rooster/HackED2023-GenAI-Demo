@@ -1,4 +1,4 @@
-This repo contains the code for a presentation to be given at HackED 2023.
+This repo contains the code for a presentation to be given at HackED 2024.
 
 This is a basic GenAI chat webapp with a react frontend + flask backend. It keeps track of one conversation per user.
 
